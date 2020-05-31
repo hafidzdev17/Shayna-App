@@ -1,9 +1,9 @@
 <template>
-<div class="product">
+  <div class="product">
+    <!-- // !! Header -->
+    <HeaderShayna />
 
-   <HeaderShayna/>
-   
-   <!-- Breadcrumb Section Begin -->
+    <!-- Breadcrumb Section Begin -->
     <div class="breacrumb-section text-left">
       <div class="container">
         <div class="row">
@@ -22,86 +22,85 @@
 
     <!-- Product Shop Section Begin -->
     <section class="product-shop spad page-details">
-        <div class="container">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="product-pic-zoom">
-                                <img class="product-big-img" :src="gambar_default" alt="" />
-                            </div>
-                            <div class="product-thumbs">
-                                <carousel :loop="true" :nav="false" class="product-thumbs-track ps-slider">
-                                    <div class="pt" data-imgbigurl="img/mickey1.jpg" 
-                                    :class="thumbs[0] == gambar_default ? 'active' : '' ">
-                                        <img src="img/mickey1.jpg" alt="" @click="ubahGambar(thumbs[0])"/>
-                                    </div>
-
-                                    <div class="pt" data-imgbigurl="img/mickey2.jpg" 
-                                    :class="thumbs[1] == gambar_default ? 'active' : '' ">
-                                        <img src="img/mickey2.jpg" alt="" @click="ubahGambar(thumbs[1])" />
-                                    </div>
-
-                                    <div class="pt" data-imgbigurl="img/mickey3.jpg"
-                                    :class="thumbs[2] == gambar_default ? 'active' : '' ">
-                                        <img src="img/mickey3.jpg" alt="" @click="ubahGambar(thumbs[2])" />
-                                    </div>
-
-                                    <div class="pt" data-imgbigurl="img/mickey4.jpg"
-                                     :class="thumbs[3] == gambar_default ? 'active' : '' ">
-                                        <img src="img/mickey4.jpg" alt="" @click="ubahGambar(thumbs[3])" />
-                                    </div>
-                                </carousel>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="product-details">
-                                <div class="pd-title">
-                                    <span>oranges</span>
-                                    <h3>Pure Pineapple</h3>
-                                </div>
-                                <div class="pd-desc">
-                                    <p>
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, error officia. Rem aperiam laborum voluptatum vel, pariatur modi hic provident eum iure natus quos non a sequi, id accusantium! Autem.
-                                    </p>
-                                    <p>
-                                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam possimus quisquam animi, commodi, nihil voluptate nostrum neque architecto illo officiis doloremque et corrupti cupiditate voluptatibus error illum. Commodi expedita animi nulla aspernatur.
-                                        Id asperiores blanditiis, omnis repudiandae iste inventore cum, quam sint molestiae accusamus voluptates ex tempora illum sit perspiciatis. Nostrum dolor tenetur amet, illo natus magni veniam quia sit nihil dolores.
-                                        Commodi ratione distinctio harum voluptatum velit facilis voluptas animi non laudantium, id dolorem atque perferendis enim ducimus? A exercitationem recusandae aliquam quod. Itaque inventore obcaecati, unde quam
-                                        impedit praesentium veritatis quis beatae ea atque perferendis voluptates velit architecto?
-                                    </p>
-                                    <h4>$495.00</h4>
-                                </div>
-                                <div class="quantity">
-                                    <router-link to="/cart">
-                                    <a href="#" class="primary-btn pd-cart">Add To Cart</a>
-                                    </router-link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+              <div class="col-lg-6">
+                <div class="product-pic-zoom">
+                  <img class="product-big-img" :src="gambar_default" alt />
                 </div>
+                <div
+                  class="product-thumbs"
+                  v-if="productDetails.galleries.length > 0"
+                >
+                  <carousel
+                    :dots="false"
+                    :nav="false"
+                    class="product-thumbs-track ps-slider"
+                  >
+                    <div
+                      v-for="img in productDetails.galleries"
+                      :key="img.id"
+                      class="pt"
+                      @click="changeImage(img.photo)"
+                      :class="img.photo == gambar_default ? 'active' : ''"
+                    >
+                      <img :src="img.photo" alt />
+                    </div>
+                  </carousel>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="product-details text-left">
+                  <div class="pd-title">
+                    <span>{{ productDetails.type }}</span>
+                    <h3>{{ productDetails.name }}</h3>
+                  </div>
+                  <div class="pd-desc">
+                    <p v-html="productDetails.description"></p>
+                    <h4>${{ productDetails.price }}</h4>
+                  </div>
+                  <div class="quantity">
+                    <router-link to="/cart">
+                      <a
+                        @click="
+                          saveKeranjang(
+                            productDetails.id,
+                            productDetails.name,
+                            productDetails.price,
+                            productDetails.galleries[0].photo
+                          )
+                        "
+                        href="#"
+                        class="primary-btn pd-cart"
+                        >Add To Cart</a
+                      >
+                    </router-link>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </section>
     <!-- Product Shop Section End -->
 
-     <RelatedShayna />
+    <RelatedShayna />
 
-   <FooterShayna/>
-
-</div>
-
+    <FooterShayna />
+  </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HeaderShayna from '@/components/HeaderShayna.vue';
-import FooterShayna from '@/components/FooterShayna.vue';
-import RelatedShayna from '@/components/RelatedShayna.vue';
+import HeaderShayna from "@/components/HeaderShayna.vue";
+import FooterShayna from "@/components/FooterShayna.vue";
+import RelatedShayna from "@/components/RelatedShayna.vue";
 
-import carousel from 'vue-owl-carousel';
-
+import carousel from "vue-owl-carousel";
+import axios from "axios";
 
 export default {
   name: "product",
@@ -109,31 +108,61 @@ export default {
     HeaderShayna,
     FooterShayna,
     RelatedShayna,
-    carousel
+    carousel,
   },
   data() {
-      return {
-          gambar_default: "img/mickey1.jpg",
-          thumbs: [
-               "img/mickey1.jpg",
-               "img/mickey2.jpg",
-               "img/mickey3.jpg",
-               "img/mickey4.jpg"
-          ]
-      }
+    return {
+      gambar_default: "",
+      productDetails: [],
+      keranjangUser: [],
+    };
   },
+
   methods: {
-      ubahGambar(urlGambar) {
-          this.gambar_default = urlGambar;
+    changeImage(urlImage) {
+      this.gambar_default = urlImage;
+    },
+    setDataImage(data) {
+      // replace object productDetails dengan data dari API
+      this.productDetails = data;
+      // replace value gambar default dengan data dari API (galleries)
+      this.gambar_default = data.galleries[0].photo;
+    },
+    saveKeranjang(idProduct, nameProduct, priceProduct, photoProduct) {
+      var productStored = {
+        id: idProduct,
+        name: nameProduct,
+        price: priceProduct,
+        photo: photoProduct,
+      };
+
+      this.keranjangUser.push(productStored);
+      const parsing = JSON.stringify(this.keranjangUser);
+      localStorage.setItem("keranjangUser", parsing);
+    },
+  },
+  mounted() {
+    if (localStorage.getItem("keranjangUser")) {
+      try {
+        this.keranjangUser = JSON.parse(localStorage.getItem("keranjangUser"));
+      } catch (error) {
+        localStorage.removeItem("keranjangUser");
       }
-  }
-}
+    }
+
+    axios
+      .get("http://shayna-backend.belajarkoding.com/api/products", {
+        params: {
+          id: this.$route.params.id,
+        },
+      })
+      .then((res) => this.setDataImage(res.data.data))
+      .catch((err) => console.log(err));
+  },
+};
 </script>
-
 <style scoped>
-
-.product-thumbs .pt{
-    margin-right: 10px;
+.product-thumbs .pt {
+  margin-right: 10px;
 }
-
 </style>
